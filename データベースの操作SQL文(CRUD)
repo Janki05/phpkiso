@@ -1,0 +1,106 @@
+データベースの操作SQL文(CRUD)
+
+-Create(データ作成)
+`アクサングラープ(バッククォーテーション)。テープル名やカラム名を囲むときに使用
+
+INSERT INTO `survey` (`nickname`,`email`,`content`) VALUES ("のびた","nobita@gmail.com","ぼくのびたです");
+
+INSERT INTO `データを作りたいテーブル名` (`カラム名1`,`カラム名2`,...) VALUES("カラム名1にセットしたい値"、"カラム名2にセットしたい値" ,...)
+
+
+INSERT INTO `survey` (`nickname`,`email`,`content`) VALUES ("出木杉","deki@gmail.com","ぼく出木杉です"),("ジャイ子","jyaiko@gmail.com","ぼくジャイ子です"),("ドラミちゃん","dorami@gmail.com","ぼくどらみちゃんです"),
+("ドラミちゃん","dorami@gmail.com","ぼくどらみちゃんです");
+
+-Read (データの読み出し)
+SELECT * FROM `survey`;
+
+SELECT `取得したいカラム名1`,`取得したいカラム名2`,・・・ FROM `データを取得したいテーブル名` WHERE 絞り込み条件;
+
+SELECTとFROMの間には取得したいカラム名カンマ区切りで書く。*(アスタリスク)はカラム全部という意味
+
+WHEREは取得したいデータを指定できる。省略も可能。省略したときは全データ取得
+
+-検索方法を完全一致検索と呼びます。
+SELECT * FROM `survey` WHERE `nickname` = "ジャイアン";
+SELECT * FROM `survey` WHERE `nickname` = "のびた";
+
+-あいまい検索（部分一致 or 中間一致検索）と呼びます。
+SELECT * FROM `survey` WHERE `email` LIKE "%n%";
+SELECT * FROM `survey` WHERE `email` LIKE "%y%";
+
+-前方一致検索
+SELECT * FROM `survey` WHERE `email` LIKE "n%";
+
+-後方一致検索(語尾が「」)
+SELECT * FROM `survey` WHERE `content` LIKE "%です";
+
+-数値に対する絞り込み検索
+SELECT * FROM `survey` WHERE `code` > 5
+
+複数条件での絞り込み
+SELECT * FROM `survey` WHERE `email` LIKE "%n%" AND `content` LIKE "%です";
+SELECT * FROM `survey` WHERE `email` LIKE "%n%" OR `content` LIKE "%です";
+
+SELECT * FROM `survey` WHERE `code` IN(1,3,5);
+
+並べ替え
+SELECT * FROM `survey` ORDER BY `code` ASC;
+
+codeの数字が小さい順に並ぶ
+ASC 昇順(ASCは省略可能)
+
+SELECT * FROM `survey` ORDER BY `nickname` ASC;
+ひらがな、カタカナで並び変えも可能
+
+
+SELECT * FROM `survey` ORDER BY `code` DESC;
+codeの数字が大きい順位並ぶ
+DESC　降順(省略不可)
+
+
+-UPDATE文
+UPDATE `survey` SET `nickname` = "スネ夫" WHERE `code` = 8
+
+UPDATE `更新したいデータのあるテーブル名` SET `更新したいカラム名`="更新したいデータ",... WHERE 更新したいデータを取得する条件
+
+注意!WHERE句が指定されていないと、すべて同じ更新が実行されてしまう。
+
+-DELETE文
+　　
+
+DELETE FROM `削除したいデータがあるテーブル名` WHERE 削除したいデータを取得する条件;
+
+注意!WHERE句が指定されていないと、すべてのデータが削除されてしまう。
+
+宿題
+CRUDの例文を作っていく
+
+INSERT文
+クラスメイトのニックネームでひとり一つぶやきのデータが作成出来るようなINSERT文を作りましょう
+
+INSERT INTO `survey` (`nickname`,`email`,`content`) VALUES ("出木杉","deki@gmail.com","ぼく出木杉です"),("ジャイ子","jyaiko@gmail.com","ぼくジャイ子です"),("ドラミちゃん","dorami@gmail.com","ぼくどらみちゃんです");
+
+SELECT文
+語尾に「です」とついているコメントを書いているデータを検索できるSELECT文を作りましょう
+
+UPDATE文
+語尾に「です」とついているコメントを書いているデータを「セブ最高だぜ」に変更するUPDATE文を作りましょう
+
+DELETE文
+コメントが「セブ最高だぜ」に変えられてしまったデータをすべて削除する
+
+crud.sqlファイルを作成して、上のSQL文全てを記述して提出してください
+
+ファイルを共通化して使おう
+require...ファイルを指定してその中の処理を行う関数
+ファイル内の処理でエラーが発生したとき、処理を中断する
+指定しているファイル内の処理がエラーが発生した場合、致命的な物の場合使用
+・DB接続
+
+include...ファイルを指定してその中の処理を行う関数
+ファイル内の処理でエラーが発生しても、元のファイルは処理を継続する
+指定しているファイル内の処理がエラーが発生したとしても軽微な場合に使用
+・HTMLへの表示
+
+ファイルの指定は相対パス指定で行えるので、別階層のファイルも指定可能です
+
